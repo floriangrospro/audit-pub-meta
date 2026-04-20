@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Audit : ton offre est-elle prête pour la pub Meta ?</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Lora:ital,wght@0,400;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#0D1B2A;--navy-80:#1E3347;
+  --gold:#C9952A;--gold-lt:#FBF2E0;--gold-md:#E8C06A;
+  --cream:#F7F3EC;--white:#FFFFFF;
+  --ink:#1A1612;--muted:#6B6157;--faint:#EAE5DE;--border:#DDD8D0;
+  --green:#2A6E4A;--green-lt:#EBF7F1;--green-md:#7DCAA4;
+  --amber:#B8720A;--amber-lt:#FEF6E7;--amber-md:#EFC26A;
+  --red:#9B2C2C;--red-lt:#FCEAEA;--red-md:#E09090;
+  --r:14px;--r-lg:20px;
+}
+body{font-family:'Plus Jakarta Sans',sans-serif;background:var(--cream);color:var(--ink);min-height:100vh;padding:2.5rem 1rem 4rem;line-height:1.6}
+.container{max-width:580px;margin:0 auto}
+
+/* COVER */
+.cover{background:var(--navy);border-radius:var(--r-lg);padding:3rem 2.25rem 2.75rem;text-align:center;position:relative;overflow:hidden}
+.cover::before{content:'';position:absolute;top:-60px;right:-60px;width:220px;height:220px;border-radius:50%;background:rgba(201,149,42,.08);pointer-events:none}
+.cover::after{content:'';position:absolute;bottom:-80px;left:-40px;width:180px;height:180px;border-radius:50%;background:rgba(201,149,42,.05);pointer-events:none}
+.cover-eyebrow{display:inline-block;font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-bottom:1.5rem;position:relative;z-index:1}
+.cover h1{font-family:'Lora',serif;font-size:27px;font-weight:600;color:var(--white);line-height:1.35;margin-bottom:1.1rem;position:relative;z-index:1}
+.cover h1 em{font-style:italic;color:var(--gold-md)}
+.cover-sub{font-size:14px;color:rgba(255,255,255,.62);line-height:1.75;max-width:420px;margin:0 auto 2rem;position:relative;z-index:1}
+.cover-pills{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:2.25rem;position:relative;z-index:1}
+.cover-pill{font-size:11px;font-weight:500;color:rgba(255,255,255,.55);background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:99px;padding:4px 13px}
+.btn-start{display:inline-block;background:var(--gold);color:var(--navy);font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;font-weight:700;padding:13px 32px;border-radius:var(--r);border:none;cursor:pointer;letter-spacing:.01em;transition:opacity .15s,transform .1s;position:relative;z-index:1}
+.btn-start:hover{opacity:.9;transform:translateY(-1px)}
+
+/* PROGRESS */
+.progress-wrap{margin-bottom:1.75rem}
+.progress-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.progress-cat{font-size:12px;font-weight:600;color:var(--navy-80)}
+.progress-count{font-size:12px;color:var(--muted)}
+.progress-bar{height:3px;background:var(--faint);border-radius:99px;overflow:hidden}
+.progress-fill{height:100%;background:var(--gold);border-radius:99px;transition:width .35s cubic-bezier(.4,0,.2,1)}
+
+/* QUESTION */
+.q-card{background:var(--white);border-radius:var(--r-lg);border:1px solid var(--border);padding:1.75rem 1.75rem 1.5rem;margin-bottom:1rem}
+.q-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:.65rem}
+.q-cat-badge{font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);background:var(--gold-lt);border:1px solid var(--gold-md);border-radius:99px;padding:3px 10px}
+.q-num{font-size:11px;color:var(--muted);font-weight:500}
+.q-title{font-size:15px;font-weight:600;color:var(--navy);line-height:1.5;margin-bottom:.65rem}
+.q-detail{font-size:13px;color:var(--muted);line-height:1.75;margin-bottom:1.5rem;padding-left:12px;border-left:2px solid var(--faint)}
+.q-options{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.q-btn{padding:11px 12px;border-radius:var(--r);border:1.5px solid var(--border);background:var(--white);color:var(--muted);font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;font-weight:500;cursor:pointer;transition:all .15s;text-align:center}
+.q-btn:hover{background:var(--cream);border-color:#bbb;color:var(--ink)}
+.q-btn.yes{background:var(--green-lt);border-color:var(--green-md);color:var(--green);font-weight:600}
+.q-btn.no{background:var(--amber-lt);border-color:var(--amber-md);color:var(--amber);font-weight:600}
+
+/* NAV */
+.nav{display:flex;justify-content:space-between;align-items:center;margin-top:1rem}
+.btn-ghost{padding:9px 20px;border-radius:var(--r);border:1px solid var(--border);background:transparent;color:var(--muted);font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;font-weight:500;cursor:pointer;transition:all .15s}
+.btn-ghost:hover{background:var(--white);color:var(--ink)}
+.btn-ghost:disabled{opacity:.3;cursor:not-allowed}
+.btn-navy{padding:10px 24px;border-radius:var(--r);border:none;background:var(--navy);color:var(--white);font-family:'Plus Jakarta Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:all .15s;letter-spacing:.01em}
+.btn-navy:hover{background:var(--navy-80)}
+.btn-navy:disabled{opacity:.3;cursor:not-allowed}
+
+/* RESULTS */
+.result-fade{animation:fadeUp .4s ease}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+
+.score-hero{background:var(--navy);border-radius:var(--r-lg);padding:2.5rem 2rem;text-align:center;margin-bottom:1rem;position:relative;overflow:hidden}
+.score-hero::before{content:'';position:absolute;top:-50px;right:-50px;width:180px;height:180px;border-radius:50%;background:rgba(201,149,42,.07);pointer-events:none}
+.score-eyebrow{font-size:11px;font-weight:600;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);margin-bottom:1.25rem;position:relative;z-index:1}
+.score-num-wrap{display:flex;align-items:baseline;justify-content:center;gap:4px;margin-bottom:.4rem;position:relative;z-index:1}
+.score-big{font-size:72px;font-weight:700;color:var(--white);line-height:1}
+.score-max{font-size:28px;color:rgba(255,255,255,.35);font-weight:400}
+.score-sub{font-size:12px;color:rgba(255,255,255,.45);margin-bottom:1.25rem;position:relative;z-index:1}
+.score-tag{display:inline-block;font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:5px 16px;border-radius:99px;margin-bottom:1rem;position:relative;z-index:1}
+.tag-go{background:var(--green-lt);color:var(--green)}
+.tag-mid{background:var(--amber-lt);color:var(--amber)}
+.tag-wait{background:var(--red-lt);color:var(--red)}
+.profile-title{font-family:'Lora',serif;font-size:20px;font-weight:600;color:var(--white);margin-bottom:.6rem;position:relative;z-index:1;line-height:1.4}
+.profile-sub{font-size:13px;color:rgba(255,255,255,.62);line-height:1.75;max-width:440px;margin:0 auto;position:relative;z-index:1}
+
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:1rem}
+.stat{background:var(--white);border-radius:var(--r);border:1px solid var(--border);padding:1rem;text-align:center}
+.stat-n{font-size:28px;font-weight:700;line-height:1}
+.stat-l{font-size:11px;color:var(--muted);margin-top:3px;font-weight:500}
+.c-green{color:var(--green)}.c-red{color:var(--red)}.c-navy{color:var(--navy)}
+
+.section-card{background:var(--white);border-radius:var(--r-lg);border:1px solid var(--border);padding:1.5rem 1.75rem;margin-bottom:1rem}
+.section-card h3{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:1.1rem}
+
+.bk-row{display:flex;align-items:center;gap:12px;padding:10px 0;border-bottom:1px solid var(--faint)}
+.bk-row:last-child{border-bottom:none}
+.dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.d-ok{background:var(--green)}.d-mid{background:var(--amber)}.d-ko{background:var(--red)}
+.bk-name{font-size:13px;color:var(--ink);flex:1;font-weight:500}
+.bk-bar-wrap{width:80px;height:4px;background:var(--faint);border-radius:99px;overflow:hidden}
+.bk-bar{height:100%;border-radius:99px;transition:width .6s ease .1s}
+.bar-ok{background:var(--green)}.bar-mid{background:var(--amber)}.bar-ko{background:var(--red)}
+.bk-status{font-size:11px;font-weight:600;min-width:72px;text-align:right}
+.s-ok{color:var(--green)}.s-mid{color:var(--amber)}.s-ko{color:var(--red)}
+
+.reco{display:flex;gap:10px;align-items:flex-start;border-radius:var(--r);padding:12px 14px;margin-bottom:8px;border:1px solid transparent}
+.reco-ok{background:var(--green-lt);border-color:var(--green-md)}
+.reco-mid{background:var(--amber-lt);border-color:var(--amber-md)}
+.reco-ko{background:var(--red-lt);border-color:var(--red-md)}
+.reco-icon{width:20px;height:20px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;margin-top:1px}
+.icon-ok{background:var(--green);color:#fff}.icon-mid{background:var(--amber);color:#fff}.icon-ko{background:var(--red);color:#fff}
+.reco-txt{font-size:13px;line-height:1.7}
+.reco-ok .reco-txt{color:#1a4a2e}.reco-mid .reco-txt{color:#5c3a0e}.reco-ko .reco-txt{color:#6a1a1a}
+
+/* FLORIAN CARD */
+.florian-card{background:var(--white);border-radius:var(--r-lg);border:1px solid var(--border);padding:1.75rem;margin-bottom:1rem}
+.florian-card h3{font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:1rem}
+.florian-card p{font-size:14px;color:var(--ink);line-height:1.85}
+.florian-card p+p{margin-top:.85rem}
+
+/* CTA */
+.cta-block{background:var(--navy);border-radius:var(--r-lg);padding:2.25rem 2rem;text-align:center;margin-top:.5rem}
+.cta-block h3{font-family:'Lora',serif;font-size:21px;font-weight:600;color:var(--white);margin-bottom:.6rem;line-height:1.35}
+.cta-block p{font-size:13px;color:rgba(255,255,255,.6);line-height:1.75;margin-bottom:1.75rem;max-width:400px;margin-left:auto;margin-right:auto}
+.btn-gold{display:inline-block;background:var(--gold);color:var(--navy);font-family:'Plus Jakarta Sans',sans-serif;font-size:14px;font-weight:700;padding:13px 32px;border-radius:var(--r);border:none;cursor:pointer;letter-spacing:.01em;transition:opacity .15s,transform .1s}
+.btn-gold:hover{opacity:.9;transform:translateY(-1px)}
+.no-sales{font-size:11px;color:rgba(255,255,255,.35);margin-top:.9rem;display:block}
+.btn-reset{display:block;margin:1.25rem auto 0;background:transparent;border:1px solid rgba(255,255,255,.15);color:rgba(255,255,255,.35);font-family:'Plus Jakarta Sans',sans-serif;font-size:12px;padding:7px 18px;border-radius:8px;cursor:pointer;transition:all .15s}
+.btn-reset:hover{border-color:rgba(255,255,255,.35);color:rgba(255,255,255,.6)}
+
+@media(max-width:480px){
+  .cover h1{font-size:22px}
+  .score-big{font-size:56px}
+  body{padding:1.5rem .75rem 3rem}
+  .q-card{padding:1.25rem}
+  .results-row{grid-template-columns:1fr 1fr}
+}
+</style>
+</head>
+<body>
+<div class="container" id="app"></div>
+<script>
+const Q=[
+  {id:1,cat:"L'offre",w:2,
+   t:"Tu as déjà vendu ton offre au moins 3 fois, à prix plein, à des inconnus.",
+   d:"La pub amplifie ce qui fonctionne déjà. Elle ne crée pas la demande à partir de rien. Une offre vendue en organique, à prix plein, à des gens qui ne te connaissaient pas encore : c'est le signal qu'on cherche."},
+  {id:2,cat:"L'offre",w:2,
+   t:"Tu sais formuler le résultat concret et chiffré que ton client obtient grâce à toi.",
+   d:"Par exemple : mes clients doublent leur CA en 90 jours, ou ils perdent 6 kg en 8 semaines. Sans résultat précis, ton visuel publicitaire sera vague. Et une pub vague ne convertit pas, peu importe le budget."},
+  {id:3,cat:"L'audience",w:1,
+   t:"Tu connais précisément ton client idéal : sa situation, sa frustration principale, les mots qu'il utilise.",
+   d:"Pas un vague femmes de 30 à 50 ans qui veulent changer. Un profil précis avec une douleur spécifique. Plus ton ciblage est fin, plus ton coût par lead sera bas."},
+  {id:4,cat:"L'audience",w:2,
+   t:"Tu as déjà une base de clients ou d'abonnés engagés, même petite.",
+   d:"Liste email, acheteurs passés, followers actifs. Cette base permet de créer des audiences similaires et de faire du retargeting. Ce sont deux des leviers les plus puissants pour faire baisser ton coût d'acquisition."},
+  {id:5,cat:"La vitrine",w:2,
+   t:"Ta landing page ou page de vente est en ligne et a déjà converti en organique.",
+   d:"Avant d'envoyer du trafic payant dessus, la page doit déjà convaincre tes abonnés chauds. Si elle ne convainc pas tes fans, elle ne convaincra pas des inconnus."},
+  {id:6,cat:"La vitrine",w:1,
+   t:"Tu as au moins 2 témoignages clients visibles sur ta page ou tes réseaux.",
+   d:"La preuve sociale est le premier filtre de confiance pour un prospect froid. Sans témoignage, ton taux de conversion sera systématiquement trop bas pour que la pub soit rentable."},
+  {id:7,cat:"Le suivi",w:2,
+   t:"Tu as une séquence email d'au moins 3 messages pour les prospects qui s'inscrivent.",
+   d:"70% des leads ne convertissent pas le jour J. Sans suivi email, tu perds les deux tiers de ton investissement. Même 3 emails bien rédigés font une énorme différence sur le retour final."},
+  {id:8,cat:"Le suivi",w:1,
+   t:"Quand un prospect te contacte, tu lui réponds dans les 24h avec une proposition claire.",
+   d:"Un lead acheté qui attend 3 jours une réponse, c'est de l'argent jeté. La pub peut générer des dizaines de contacts. Sans process de réponse rapide, tu perds la majorité avant même d'avoir parlé."},
+  {id:9,cat:"La capacité",w:1,
+   t:"Tu as un budget minimum de 300 euros par mois dédié uniquement aux tests publicitaires.",
+   d:"En dessous de 300 euros par mois, l'algorithme n'a pas assez de données pour s'optimiser. Ce n'est pas un plafond. C'est le seuil en dessous duquel les résultats sont aléatoires et non reproductibles."},
+  {id:10,cat:"La capacité",w:1,
+   t:"Tu es prêt à maintenir le budget au moins 6 semaines sans tout couper à la moindre variation.",
+   d:"Couper après 10 jours parce que ça ne marche pas encore est l'erreur numéro 1. L'algorithme a besoin de 4 à 6 semaines pour se stabiliser. La patience est une vraie compétence publicitaire."},
+];
+const CATS=["L'offre","L'audience","La vitrine","Le suivi","La capacité"];
+let step='cover',cur=0,ans={};
+
+function score(){return Q.reduce((s,q)=>s+(ans[q.id]==='yes'?q.w:0),0)}
+function maxScore(){return Q.reduce((s,q)=>s+q.w,0)}
+function catResult(cat){
+  const qs=Q.filter(q=>q.cat===cat);
+  const got=qs.reduce((s,q)=>s+(ans[q.id]==='yes'?q.w:0),0);
+  const max=qs.reduce((s,q)=>s+q.w,0);
+  return{got,max,pct:max>0?got/max:0};
+}
+function profile(){
+  const p=score()/maxScore();
+  if(p>=0.8)return{tag:'Prêt à lancer',cls:'tag-go',
+    title:'Ton business est prêt pour la publicité payante.',
+    sub:'Tu coches toutes les cases importantes. La prochaine étape, c\'est de construire une vraie stratégie de campagne pour ne pas gaspiller ce momentum.',
+    recos:[
+      {t:'ok',txt:'Lance une campagne test sur 4 à 6 semaines avec un budget structuré dès le départ.'},
+      {t:'ok',txt:'Commence par un objectif Leads pour alimenter ta séquence email existante.'},
+      {t:'ok',txt:'Priorise le retargeting de ta liste existante pendant les 2 premières semaines.'},
+    ],
+    ctaTxt:''
+  };
+  if(p>=0.55)return{tag:'Presque prêt',cls:'tag-mid',
+    title:'Tu y es presque. Quelques ajustements et tu peux démarrer.',
+    sub:'Tu as les bases. Mais 2 ou 3 points bloquants vont rogner ton budget si tu lances maintenant. On en parle ensemble, on règle ça vite.',
+    recos:[
+      {t:'mid',txt:'Identifie tes points en orange dans le détail ci-dessous et traite-les dans l\'ordre.'},
+      {t:'mid',txt:'N\'envoie pas de trafic payant avant d\'avoir une page qui convertit et au moins 2 témoignages.'},
+      {t:'ok', txt:'Installe le pixel Meta maintenant. Chaque jour sans données est du temps perdu.'},
+    ],
+    ctaTxt:''
+  };
+  return{tag:'Pas encore prêt',cls:'tag-wait',
+    title:'Ton business a besoin d\'être consolidé avant de lancer la pub.',
+    sub:'Ce n\'est pas une mauvaise nouvelle. La pub amplifie ce qui existe déjà. Autant construire des fondations solides pour que chaque euro investi travaille vraiment.',
+    recos:[
+      {t:'ko', txt:'Valide ton offre en organique d\'abord. Au moins 3 ventes à prix plein avant toute pub.'},
+      {t:'ko', txt:'Construis une page de vente simple et recueille 2 témoignages clients.'},
+      {t:'mid',txt:'Mets en place une séquence de 3 emails de nurturing automatisée.'},
+    ],
+    ctaTxt:''
+  };
+}
+
+function render(){
+  const app=document.getElementById('app');
+  if(step==='cover')app.innerHTML=renderCover();
+  else if(step==='q')app.innerHTML=renderQ();
+  else app.innerHTML=renderResults();
+}
+
+function renderCover(){
+  return`<div class="cover">
+    <p class="cover-eyebrow">Audit gratuit</p>
+    <h1>Ton offre est-elle prête à être<br><em>propulsée avec la pub Meta ?</em></h1>
+    <p class="cover-sub">Réponds à 10 questions honnêtes. Tu sauras exactement où tu en es et ce qu'il faut faire en priorité avant d'investir le moindre euro en publicité.</p>
+    <div class="cover-pills">
+      <span class="cover-pill">10 questions</span>
+      <span class="cover-pill">3 minutes</span>
+      <span class="cover-pill">Résultat personnalisé</span>
+    </div>
+    <button class="btn-start" onclick="go('q')">Je veux savoir où j'en suis</button>
+  </div>`;
+}
+
+function renderQ(){
+  const q=Q[cur],sel=ans[q.id];
+  const pct=Math.round((cur/Q.length)*100);
+  return`<div>
+    <div class="progress-wrap">
+      <div class="progress-top">
+        <span class="progress-cat">${q.cat}</span>
+        <span class="progress-count">${cur+1} sur ${Q.length}</span>
+      </div>
+      <div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div>
+    </div>
+    <div class="q-card">
+      <div class="q-header">
+        <span class="q-cat-badge">${q.cat}</span>
+        <span class="q-num">Question ${String(q.id).padStart(2,'0')}</span>
+      </div>
+      <p class="q-title">${q.t}</p>
+      <p class="q-detail">${q.d}</p>
+      <div class="q-options">
+        <button class="q-btn${sel==='yes'?' yes':''}" onclick="pick('yes')">Oui, c'est le cas</button>
+        <button class="q-btn${sel==='no'?' no':''}" onclick="pick('no')">Pas encore</button>
+      </div>
+    </div>
+    <div class="nav">
+      <button class="btn-ghost" onclick="prev()" ${cur===0?'disabled':''}>Précédent</button>
+      <button class="btn-navy" onclick="next()" ${!sel?'disabled':''}>${cur===Q.length-1?'Voir mes résultats':'Suivant'}</button>
+    </div>
+  </div>`;
+}
+
+function renderResults(){
+  const s=score(),m=maxScore();
+  const yes=Object.values(ans).filter(v=>v==='yes').length;
+  const no=Q.length-yes;
+  const p=profile();
+
+  const bk=CATS.map(cat=>{
+    const r=catResult(cat);
+    const dc=r.pct===1?'d-ok':r.pct>=0.5?'d-mid':'d-ko';
+    const bc=r.pct===1?'bar-ok':r.pct>=0.5?'bar-mid':'bar-ko';
+    const sc=r.pct===1?'s-ok':r.pct>=0.5?'s-mid':'s-ko';
+    const lbl=r.pct===1?'Validé':r.pct>=0.5?'Partiel':'À construire';
+    return`<div class="bk-row">
+      <div class="dot ${dc}"></div>
+      <span class="bk-name">${cat}</span>
+      <div class="bk-bar-wrap"><div class="bk-bar ${bc}" style="width:${Math.round(r.pct*100)}%"></div></div>
+      <span class="bk-status ${sc}">${lbl}</span>
+    </div>`;
+  }).join('');
+
+  const recs=p.recos.map(r=>{
+    const cls=r.t==='ok'?'reco-ok':r.t==='mid'?'reco-mid':'reco-ko';
+    const ic=r.t==='ok'?'icon-ok':r.t==='mid'?'icon-mid':'icon-ko';
+    const sym=r.t==='ok'?'✓':r.t==='mid'?'!':'×';
+    return`<div class="reco ${cls}"><div class="reco-icon ${ic}">${sym}</div><p class="reco-txt">${r.txt}</p></div>`;
+  }).join('');
+
+  return`<div class="result-fade">
+    <div class="score-hero">
+      <p class="score-eyebrow">Ton résultat</p>
+      <div class="score-num-wrap">
+        <span class="score-big">${s}</span>
+        <span class="score-max">/${m}</span>
+      </div>
+      <p class="score-sub">${yes} points validés sur ${Q.length} questions</p>
+      <span class="score-tag ${p.cls}">${p.tag}</span>
+      <p class="profile-title">${p.title}</p>
+      <p class="profile-sub">${p.sub}</p>
+    </div>
+
+    <div class="stats">
+      <div class="stat"><div class="stat-n c-green">${yes}</div><div class="stat-l">Points validés</div></div>
+      <div class="stat"><div class="stat-n c-red">${no}</div><div class="stat-l">À travailler</div></div>
+      <div class="stat"><div class="stat-n c-navy">${Math.round(s/m*100)}%</div><div class="stat-l">Maturité</div></div>
+    </div>
+
+    <div class="section-card"><h3>Détail par dimension</h3>${bk}</div>
+    <div class="section-card"><h3>Ce que je te recommande</h3>${recs}</div>
+
+    <div class="florian-card">
+      <h3>Une question sur ton projet ?</h3>
+      <p>Je suis media buyer spécialisé en acquisition digitale pour les coachs et infopreneurs. Si tu te demandes si la publicité Meta peut fonctionner pour ton offre, ou simplement par où commencer, je suis disponible pour en discuter.</p>
+      <p>On prend 30 minutes ensemble, tu me parles de ton projet, et on voit honnêtement si quelque chose est envisageable pour toi. Pas d'engagement, pas de discours de vente.</p>
+    </div>
+
+    <div class="cta-block">
+      <h3>Tu veux qu'on en parle ?</h3>
+      <p>Réserve un créneau dans mon agenda. C'est gratuit, c'est sans engagement, et on voit ensemble ce qui est possible pour ton projet.</p>
+      <button class="btn-gold" onclick="window.open('https://calendly.com/floriangrospro/call-rencontre','_blank')">Réserver un appel de 30 min</button>
+      <span class="no-sales">Gratuit · Sans engagement · On voit juste si ça fait sens</span>
+      <button class="btn-reset" onclick="reset()">Recommencer l'audit</button>
+    </div>
+  </div>`;
+}
+
+function go(s){step=s;cur=0;render()}
+function pick(v){ans[Q[cur].id]=v;render()}
+function prev(){if(cur>0){cur--;render()}}
+function next(){
+  if(!ans[Q[cur].id])return;
+  if(cur<Q.length-1){cur++;render()}
+  else{step='results';render()}
+}
+function reset(){ans={};step='cover';render()}
+render();
+</script>
+</body>
+</html>
